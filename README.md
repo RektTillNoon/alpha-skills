@@ -14,16 +14,28 @@ Install the skill:
 npx skills@latest add RektTillNoon/alpha-skills --skill tex-spec-writer
 ```
 
-Check whether it is already installed before adding it again:
+Check global installs from any directory before adding it again:
 
 ```bash
-npx skills@latest list --json
+npx skills@latest list --global --json
 ```
 
 Update installed skills instead of re-adding them:
 
 ```bash
 npx skills@latest update
+```
+
+Remove the skill:
+
+```bash
+npx skills@latest remove tex-spec-writer
+```
+
+Alias:
+
+```bash
+npx skills@latest rm tex-spec-writer
 ```
 
 ## Repository Layout
