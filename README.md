@@ -11,7 +11,19 @@ Creates decision-complete TeX specs and phased implementation plans grounded in 
 Install the skill:
 
 ```bash
-npx skills@latest add RektTillNoon/alpha-skills/tex-spec-writer
+npx skills@latest add RektTillNoon/alpha-skills --skill tex-spec-writer
+```
+
+Check whether it is already installed before adding it again:
+
+```bash
+npx skills@latest list --json
+```
+
+Update an existing install instead of re-adding it:
+
+```bash
+npx skills@latest update tex-spec-writer
 ```
 
 ## Repository Layout
