@@ -4,10 +4,16 @@ A public skill collection for agent workflows.
 
 ## Install The Collection
 
-Install any skill from this collection with:
+Install from this collection:
 
 ```bash
-npx skills@latest add RektTillNoon/alpha-skills --skill <skill-name>
+npx skills@latest add RektTillNoon/alpha-skills
+```
+
+Preview available skills without installing:
+
+```bash
+npx skills@latest add RektTillNoon/alpha-skills --list
 ```
 
 Check global installs from any directory before adding a skill again:
