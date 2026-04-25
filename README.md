@@ -1,6 +1,6 @@
-# TeX Spec Writer Skills
+# Alpha Skills
 
-A public skill collection for writing repo-grounded TeX technical specs and companion PDFs.
+A public skill collection for agent workflows.
 
 ## Skills
 
@@ -11,13 +11,13 @@ Creates decision-complete TeX specs and phased implementation plans grounded in 
 Install the skill:
 
 ```bash
-npx skills@latest add RektTillNoon/tex-spec-writer-skills/tex-spec-writer
+npx skills@latest add RektTillNoon/alpha-skills/tex-spec-writer
 ```
 
 ## Repository Layout
 
 ```text
-tex-spec-writer-skills/
+alpha-skills/
 ├── README.md
 ├── LICENSE
 └── tex-spec-writer/
