@@ -20,10 +20,10 @@ Check whether it is already installed before adding it again:
 npx skills@latest list --json
 ```
 
-Update an existing install instead of re-adding it:
+Update installed skills instead of re-adding them:
 
 ```bash
-npx skills@latest update tex-spec-writer
+npx skills@latest update
 ```
 
 ## Repository Layout
