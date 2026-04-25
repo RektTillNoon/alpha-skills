@@ -8,16 +8,10 @@ A public skill collection for writing repo-grounded TeX technical specs and comp
 
 Creates decision-complete TeX specs and phased implementation plans grounded in the current repository state. Every `.tex` deliverable must include a rendered `.pdf` companion.
 
-Install after this repository is published:
+Install the skill:
 
 ```bash
-npx skills@latest add <owner>/tex-spec-writer-skills/tex-spec-writer
-```
-
-Example with a real GitHub owner:
-
-```bash
-npx skills@latest add your-github-user/tex-spec-writer-skills/tex-spec-writer
+npx skills@latest add RektTillNoon/tex-spec-writer-skills/tex-spec-writer
 ```
 
 ## Repository Layout
