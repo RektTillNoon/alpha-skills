@@ -1,0 +1,4 @@
+interface:
+  display_name: "Clean"
+  short_description: "Project-agnostic cleanup, simplification, and test audit"
+  default_prompt: "Use $clean to run a behavior-preserving cleanup pass that discovers local repo tools, removes bloat, clarifies semantics, keeps tests honest, and verifies the narrowest relevant contract."

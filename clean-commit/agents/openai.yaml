@@ -1,0 +1,4 @@
+interface:
+  display_name: "Clean Commit"
+  short_description: "Project-agnostic cleanup plus intentional git commit"
+  default_prompt: "Use $clean-commit to run a behavior-preserving cleanup pass, discover the repo's verification gate, inspect unstaged work, and commit only the intended paths when requested."
