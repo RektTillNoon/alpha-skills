@@ -1,0 +1,25 @@
+{
+  "name": "alpha-skills",
+  "owner": {
+    "name": "Alpha Skills"
+  },
+  "plugins": [
+    {
+      "name": "seo-geo",
+      "source": "./plugins/seo-geo",
+      "description": "Public-safe SEO and GEO audit workflows for any project.",
+      "author": {
+        "name": "Alpha Skills"
+      },
+      "repository": "https://github.com/RektTillNoon/alpha-skills",
+      "license": "MIT",
+      "keywords": [
+        "seo",
+        "geo",
+        "audit",
+        "content",
+        "search"
+      ]
+    }
+  ]
+}

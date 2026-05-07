@@ -1,0 +1,38 @@
+{
+  "name": "seo-geo",
+  "version": "0.1.0",
+  "description": "Public-safe SEO and GEO audit workflows for any project.",
+  "author": {
+    "name": "Alpha Skills",
+    "url": "https://github.com/RektTillNoon/alpha-skills"
+  },
+  "homepage": "https://github.com/RektTillNoon/alpha-skills/tree/main/plugins/seo-geo",
+  "repository": "https://github.com/RektTillNoon/alpha-skills",
+  "license": "MIT",
+  "keywords": [
+    "seo",
+    "geo",
+    "audit",
+    "content",
+    "search"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "SEO/GEO",
+    "shortDescription": "Public-safe SEO and GEO audits for any project.",
+    "longDescription": "Run reusable SEO, GEO, and AI-search visibility audits from project-local evidence without embedding credentials or project-specific defaults.",
+    "developerName": "Alpha Skills",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/RektTillNoon/alpha-skills",
+    "defaultPrompt": [
+      "Audit this project for SEO and GEO readiness.",
+      "Create a public-safe search visibility backlog.",
+      "Review this site evidence without leaking secrets."
+    ],
+    "brandColor": "#2563EB"
+  }
+}

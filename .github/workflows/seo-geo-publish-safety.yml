@@ -1,0 +1,45 @@
+name: SEO/GEO Publish Safety
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - develop
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Run contract tests
+        run: python3 -B -m unittest clean-commit.tests.test_inspect_unstaged_changes tests.test_seo_geo_plugin_public_contract
+
+      - name: Install gitleaks
+        run: |
+          set -euo pipefail
+          version="8.28.0"
+          archive="gitleaks_${version}_linux_x64.tar.gz"
+          curl -sSfL "https://github.com/gitleaks/gitleaks/releases/download/v${version}/${archive}" -o "${archive}"
+          tar -xzf "${archive}" gitleaks
+          sudo mv gitleaks /usr/local/bin/gitleaks
+
+      - name: Run gitleaks
+        run: gitleaks detect --source . --verbose
+
+      - name: Repo-local regex secret scan
+        run: |
+          set -euo pipefail
+          if rg -n 'sk-[A-Za-z0-9_-]{20,}|sk-ant-[A-Za-z0-9_-]{20,}|gh[pousr]_[A-Za-z0-9_]{20,}|xox[baprs]-[A-Za-z0-9-]{20,}|AIza[0-9A-Za-z_-]{35}|AKIA[0-9A-Z]{16}|eyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}|-----BEGIN [A-Z ]*PRIVATE KEY-----' .agents .claude-plugin plugins/seo-geo README.md tests; then
+            exit 1
+          fi
+          if rg -n "(?i)(api[_-]?key|token|secret|password)\s*[:=]\s*['\"][^'\"\n]{8,}['\"]" .agents .claude-plugin plugins/seo-geo README.md tests; then
+            exit 1
+          fi

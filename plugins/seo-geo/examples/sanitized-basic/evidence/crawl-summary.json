@@ -1,0 +1,30 @@
+{
+  "site": "https://example.invalid",
+  "generated_at": "2026-01-01T00:00:00Z",
+  "source": "sanitized crawler fixture",
+  "pages": [
+    {
+      "url": "https://example.invalid/",
+      "status": 200,
+      "title": "Example Product",
+      "meta_description": "A short public-safe example homepage.",
+      "h1": "Example Product",
+      "canonical": "https://example.invalid/",
+      "internal_links": 3
+    },
+    {
+      "url": "https://example.invalid/docs",
+      "status": 200,
+      "title": "Example Docs",
+      "meta_description": "",
+      "h1": "Example Docs",
+      "canonical": "https://example.invalid/docs",
+      "internal_links": 1
+    }
+  ],
+  "missing_evidence": [
+    "search console export",
+    "analytics export",
+    "live search benchmark"
+  ]
+}
