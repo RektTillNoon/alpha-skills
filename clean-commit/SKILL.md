@@ -11,6 +11,12 @@ Run one constrained, behavior-preserving cleanup pass and, only when the user as
 
 Prefer less code, fewer concepts, narrower APIs, clearer names, and tests that describe the real contract. Do not turn cleanup into product work, architecture redesign, dependency churn, or style-only sweeping across unrelated files.
 
+## Ownership-Sensitive Cleanup
+
+If cleanup or commit preparation involves canonical paths, duplicated state, fallback behavior, compatibility shims, cache/state ownership, lifecycle authority, sync/reconnect authority, render authority, or any question of who should own a behavior, perform one `owner-check` pass before editing or staging, then resume this clean-commit workflow.
+
+Use the ownership decision to rank pruning candidates: false owners, duplicate representations, downstream heuristics, stale aliases, obsolete wrappers, and compatibility paths with no named external boundary should be removed before commit.
+
 ## Before Editing
 
 Work through this five-step frame explicitly:
@@ -167,7 +173,7 @@ If commit hooks can modify files, make those mutations happen before the final e
 Only commit when the user explicitly asks.
 
 1. Run `git rev-parse --show-toplevel`.
-2. Run `python3 scripts/inspect_unstaged_changes.py` from this skill's directory.
+2. Run `python3 scripts/inspect_unstaged_changes.py` from this skill's resolved directory.
 3. If the index already contains staged changes, stop and ask how to handle the pre-existing staged state.
 4. If there are no unstaged tracked files and no untracked files, report that there is nothing to commit and stop.
 5. Identify generated artifacts, local metadata, large files, binary files, renames, copies, submodule changes, and unrelated paths before staging.

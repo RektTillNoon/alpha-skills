@@ -102,26 +102,36 @@ Install the skill:
 npx skills@latest add RektTillNoon/alpha-skills --skill clean-commit
 ```
 
-### tex-spec-writer
+### owner-check
 
-Creates decision-complete TeX specs and phased implementation plans grounded in the current repository state. Every `.tex` deliverable must include a rendered `.pdf` companion.
+Runs a representation-first ownership check for architecture-sensitive edits, canonical path cleanup, duplicated state, cache/lifecycle authority, render authority, and similar "who owns this behavior?" questions.
 
 Install the skill:
 
 ```bash
-npx skills@latest add RektTillNoon/alpha-skills --skill tex-spec-writer
+npx skills@latest add RektTillNoon/alpha-skills --skill owner-check
+```
+
+### technical-design-dossier
+
+Creates decision-complete TeX Technical Design Dossiers and phased implementation plans grounded in the current repository state. Every `.tex` deliverable must include a rendered `.pdf` companion.
+
+Install the skill:
+
+```bash
+npx skills@latest add RektTillNoon/alpha-skills --skill technical-design-dossier
 ```
 
 Remove the skill:
 
 ```bash
-npx skills@latest remove tex-spec-writer
+npx skills@latest remove technical-design-dossier
 ```
 
 Alias:
 
 ```bash
-npx skills@latest rm tex-spec-writer
+npx skills@latest rm technical-design-dossier
 ```
 
 ## Repository Layout
@@ -162,10 +172,16 @@ alpha-skills/
 │   └── tests/
 │       ├── __init__.py
 │       └── test_inspect_unstaged_changes.py
-└── tex-spec-writer/
+├── owner-check/
+│   └── SKILL.md
+└── technical-design-dossier/
+    ├── assets/
+    │   └── technical-design-dossier-template.tex
     ├── SKILL.md
-    └── agents/
-        └── openai.yaml
+    ├── agents/
+    │   └── openai.yaml
+    └── references/
+        └── golden-example.md
 ```
 
 This follows the public skill collection pattern used by repositories such as `mattpocock/skills`, where each skill is a top-level directory with a `SKILL.md` file and optional supporting files.
@@ -182,7 +198,7 @@ This follows the public skill collection pattern used by repositories such as `m
 Validate the skill structure with your local skill validator if available. For Codex:
 
 ```bash
-python3 ~/.codex/skills/.system/skill-creator/scripts/quick_validate.py tex-spec-writer
+python3 ~/.codex/skills/.system/skill-creator/scripts/quick_validate.py technical-design-dossier
 ```
 
 ## License

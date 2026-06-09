@@ -1,0 +1,6 @@
+interface:
+  display_name: "Technical Design Dossier"
+  short_description: "Create repo-grounded TeX Technical Design Dossiers"
+  default_prompt: "Use $technical-design-dossier to create a repo-grounded TeX Technical Design Dossier. Write the .tex artifact, render the companion PDF, include implementation phases and validation steps, and report the exact artifact paths or the concrete blocker."
+policy:
+  allow_implicit_invocation: true

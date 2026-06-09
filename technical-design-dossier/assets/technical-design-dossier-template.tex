@@ -1,0 +1,224 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{longtable}
+\usepackage{microtype}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+
+\setlist[itemize]{leftmargin=1.5em}
+\setlist[enumerate]{leftmargin=1.5em}
+\renewcommand{\arraystretch}{1.18}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\emergencystretch=6em
+\DeclareUrlCommand{\code}{\urlstyle{tt}}
+\newcommand{\filepath}[1]{\path{#1}}
+
+% Keep the main title concise: a 2 to 6 word subject noun phrase.
+\newcommand{\dossiertitle}{Short Feature Title}
+\newcommand{\dossiersubtitle}{Technical Design Dossier}
+\newcommand{\dossierauthor}{Prepared by Codex}
+\newcommand{\preparedtimestamp}{Prepared Saturday, 23 May 2026, 00:30:53 EDT (-0400)}
+\newcommand{\repo}{Repository or workspace path}
+\newcommand{\artifactstatus}{Draft for technical review}
+\newcommand{\classification}{Internal technical document}
+
+\hypersetup{pdftitle={\dossiertitle}, pdfauthor={\dossierauthor}}
+
+\title{\dossiertitle\\[0.35em]\large\dossiersubtitle}
+\author{\dossierauthor}
+\date{\preparedtimestamp}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\begin{tabular}{>{\bfseries}p{0.24\linewidth}p{0.62\linewidth}}
+Repository & \repo \\
+Status & \artifactstatus \\
+Classification & \classification \\
+Canonical artifact & Replace with relative path to this TeX source \\
+Companion PDF & Replace with relative path to rendered PDF \\
+\end{tabular}
+\end{center}
+
+\begin{abstract}
+Replace this paragraph with a concise technical summary: the problem, the selected design, the evidence supporting it, and the validation standard for accepting the work. Keep this section factual and decision-oriented.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{Purpose}
+State why this dossier exists, who should use it, and what decision or implementation pass it is meant to make unambiguous.
+
+\section{Glossary}
+Define specialized terms before relying on them. Omit this section only when the document uses ordinary project vocabulary.
+
+\begin{longtable}{L{0.26\linewidth}L{0.62\linewidth}}
+\toprule
+\textbf{Term} & \textbf{Definition} \\
+\midrule
+\endhead
+Replace term & Replace with the precise meaning used in this dossier. \\
+\bottomrule
+\end{longtable}
+
+\section{Current Status and Source Evidence}
+Summarize only facts verified from the live repository, current reports, runtime behavior, or user-supplied source material.
+
+\begin{longtable}{L{0.25\linewidth}L{0.35\linewidth}L{0.30\linewidth}}
+\toprule
+\textbf{Evidence} & \textbf{Observed fact} & \textbf{Design implication} \\
+\midrule
+\endhead
+\filepath{path/to/file.ext} & Replace with verified behavior, interface, constant, or test coverage. & Replace with why this constrains the design. \\
+\code{command output} & Replace with relevant result. & Replace with validation or blocker implication. \\
+\bottomrule
+\end{longtable}
+
+\section{Problem Diagnosis}
+Define the failure mode or design gap. Distinguish the visible symptom from the owner, invariant, or contract that actually needs to change.
+
+\section{Goals and Non-Goals}
+\subsection{Goals}
+\begin{itemize}
+  \item Replace with a measurable outcome.
+  \item Replace with a repository-visible behavioral or architectural outcome.
+\end{itemize}
+
+\subsection{Non-Goals}
+\begin{itemize}
+  \item Replace with a plausible scope item that is explicitly excluded.
+  \item Replace with a compatibility path or fallback that should not be preserved unless a real boundary requires it.
+\end{itemize}
+
+\section{Assumptions and Constraints}
+\begin{longtable}{L{0.22\linewidth}L{0.42\linewidth}L{0.26\linewidth}}
+\toprule
+\textbf{Type} & \textbf{Statement} & \textbf{Validation path} \\
+\midrule
+\endhead
+Assumption & Replace with an assumption the implementation depends on. & Replace with command, test, inspection, or owner confirmation. \\
+Constraint & Replace with a hard boundary from the repo, runtime, API, or product requirement. & Replace with proof path. \\
+\bottomrule
+\end{longtable}
+
+\section{Canonical Ownership Model}
+Name the invariant, the deepest behavior owner, and the chosen edit layer.
+
+\begin{longtable}{L{0.24\linewidth}L{0.34\linewidth}L{0.32\linewidth}}
+\toprule
+\textbf{Concern} & \textbf{Canonical owner} & \textbf{Reason} \\
+\midrule
+\endhead
+Replace concern & Replace owner path, module, contract, or process. & Replace with first-principles rationale. \\
+\bottomrule
+\end{longtable}
+
+\section{Cutover and Compatibility Policy}
+Prefer hard cutovers inside the repository's semantic core. Allow compatibility only at verified external boundaries, and record the removal condition.
+
+\begin{longtable}{L{0.24\linewidth}L{0.31\linewidth}L{0.35\linewidth}}
+\toprule
+\textbf{Surface} & \textbf{Policy} & \textbf{Boundary or removal condition} \\
+\midrule
+\endhead
+Replace core path, field, command, or owner & Hard cutover; remove duplicate semantics in the same change. & Not applicable, or specify final migration proof. \\
+Replace external boundary & Temporary translation only for a verified consumer or persisted format. & Replace with version, adoption, telemetry, or deletion proof. \\
+\bottomrule
+\end{longtable}
+
+\section{Design}
+\subsection{Selected Design}
+Describe the selected architecture in terms of responsibilities, data flow, state ownership, and boundary contracts. Keep implementation details only where they prevent ambiguity.
+
+\subsection{Contracts}
+\begin{longtable}{L{0.22\linewidth}L{0.35\linewidth}L{0.33\linewidth}}
+\toprule
+\textbf{Contract} & \textbf{Required behavior} & \textbf{Consumer or proof} \\
+\midrule
+\endhead
+Replace contract name & Replace with required behavior, schema, state transition, or numerical invariant. & Replace with consumer, test, or rendered proof. \\
+\bottomrule
+\end{longtable}
+
+\subsection{Algorithms or Formal Model}
+Include equations or pseudocode only where they clarify the design. For example:
+\[
+  y = f(x, t; \theta)
+\]
+where \(x\) is the input state, \(t\) is time or generation, and \(\theta\) is the selected parameter set.
+
+\section{Alternatives Considered}
+\begin{longtable}{L{0.24\linewidth}L{0.24\linewidth}L{0.42\linewidth}}
+\toprule
+\textbf{Alternative} & \textbf{Disposition} & \textbf{Reason} \\
+\midrule
+\endhead
+Replace alternative & Accepted or rejected & Replace with the tradeoff that determines the decision. \\
+\bottomrule
+\end{longtable}
+
+\section{Implementation Plan}
+Each phase should include tests before code changes whenever practical.
+
+\begin{enumerate}
+  \item \textbf{Phase 1: Failing proof.} Add or identify the test, visual canary, trace, or command that currently fails for the right reason.
+  \item \textbf{Phase 2: Canonical owner change.} Modify the deepest owner identified in the Canonical Ownership Model.
+  \item \textbf{Phase 3: Boundary cleanup.} Remove stale aliases, duplicate paths, shadow state, or compatibility wrappers unless a verified external boundary requires translation.
+  \item \textbf{Phase 4: Validation.} Run the focused proof first, then the broader regression lane appropriate to the repository.
+\end{enumerate}
+
+\section{Test-Driven Development Contract}
+\begin{longtable}{L{0.26\linewidth}L{0.34\linewidth}L{0.30\linewidth}}
+\toprule
+\textbf{Test or proof} & \textbf{Expected initial result} & \textbf{Acceptance result} \\
+\midrule
+\endhead
+\code{replace command} & Fails or demonstrates the existing gap. & Passes and proves the selected invariant. \\
+\bottomrule
+\end{longtable}
+
+\section{Validation and Acceptance Criteria}
+\begin{itemize}
+  \item Replace with exact command and expected artifact.
+  \item Replace with metric, threshold, visual criterion, or behavioral invariant.
+  \item Replace with evidence that would falsify the design.
+\end{itemize}
+
+\section{Risks and Failure Modes}
+\begin{longtable}{L{0.23\linewidth}L{0.34\linewidth}L{0.33\linewidth}}
+\toprule
+\textbf{Risk} & \textbf{Failure mode} & \textbf{Mitigation or blocker} \\
+\midrule
+\endhead
+Replace risk & Replace with concrete failure mode. & Replace with mitigation, test, or reason to stop. \\
+\bottomrule
+\end{longtable}
+
+\section{Exact Next Sequence}
+\begin{enumerate}
+  \item Replace with the first command, file inspection, or test.
+  \item Replace with the first code or document edit.
+  \item Replace with the focused validation command.
+  \item Replace with the broader verification command.
+\end{enumerate}
+
+\section{Exit Rule}
+The implementation is complete only when the canonical owner has been changed, stale competing paths have been removed or justified at a boundary, the focused proof passes, the broader validation lane passes, and this dossier's companion PDF has been rendered from the current TeX source.
+
+\section{References}
+\begin{itemize}
+  \item Replace with source files, reports, papers, docs, or command outputs cited in the dossier.
+\end{itemize}
+
+\appendix
+\section{Appendix: Deferred Evidence}
+Place detailed logs, long tables, raw measurements, or source excerpts here when they would interrupt the main argument.
+
+\end{document}

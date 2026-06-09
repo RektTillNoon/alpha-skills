@@ -1,6 +1,0 @@
-interface:
-  display_name: "TeX Spec Writer"
-  short_description: "Create repo-grounded TeX specs and plans"
-  default_prompt: "Use $tex-spec-writer to draft a repo-grounded TeX technical spec with implementation phases and validation steps."
-policy:
-  allow_implicit_invocation: true

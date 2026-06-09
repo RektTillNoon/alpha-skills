@@ -11,6 +11,12 @@ Run one constrained, behavior-preserving cleanup pass. Prefer less code, fewer c
 
 Do not turn cleanup into product work, architecture redesign, dependency churn, or style-only sweeping across unrelated files.
 
+## Ownership-Sensitive Cleanup
+
+If cleanup involves canonical paths, duplicated state, fallback behavior, compatibility shims, cache/state ownership, lifecycle authority, sync/reconnect authority, render authority, or any question of who should own a behavior, perform one `owner-check` pass before editing, then resume this cleanup workflow.
+
+Use the ownership decision to rank pruning candidates: false owners, duplicate representations, downstream heuristics, stale aliases, obsolete wrappers, and compatibility paths with no named external boundary should be removed in the cleanup pass.
+
 ## Before Editing
 
 Work through this five-step frame explicitly:

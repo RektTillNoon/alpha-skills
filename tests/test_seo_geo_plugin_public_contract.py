@@ -14,6 +14,23 @@ PROVIDER_DOC = PLUGIN_ROOT / "docs" / "provider-setup.md"
 COMMAND_FILE = PLUGIN_ROOT / "commands" / "seo-geo-audit.md"
 EXAMPLE_ROOT = PLUGIN_ROOT / "examples" / "sanitized-basic"
 CI_WORKFLOW = REPO_ROOT / ".github" / "workflows" / "seo-geo-publish-safety.yml"
+TOP_LEVEL_SKILL_ROOTS = [
+    REPO_ROOT / "clean",
+    REPO_ROOT / "clean-commit",
+    REPO_ROOT / "owner-check",
+    REPO_ROOT / "technical-design-dossier",
+]
+PUBLIC_TEXT_ROOTS = [
+    REPO_ROOT / ".agents",
+    REPO_ROOT / ".claude-plugin",
+    REPO_ROOT / ".github",
+    REPO_ROOT / "plugins" / "seo-geo",
+    REPO_ROOT / "tests",
+    *TOP_LEVEL_SKILL_ROOTS,
+]
+PUBLIC_TEXT_FILES = [
+    REPO_ROOT / "README.md",
+]
 
 
 class SeoGeoPluginPublicContractTest(unittest.TestCase):
@@ -97,6 +114,23 @@ class SeoGeoPluginPublicContractTest(unittest.TestCase):
         self.assertIn("missing evidence", combined.lower())
         self.assertIn("gitleaks detect --source . --verbose", combined)
 
+    def test_top_level_skill_collection_exposes_expected_skills(self):
+        readme_text = (REPO_ROOT / "README.md").read_text()
+
+        for skill_root in TOP_LEVEL_SKILL_ROOTS:
+            skill_file = skill_root / "SKILL.md"
+
+            self.assertTrue(skill_file.is_file(), f"Missing {skill_file}")
+            self.assertIn(f"--skill {skill_root.name}", readme_text)
+
+        self.assertIn("owner-check", (REPO_ROOT / "clean" / "SKILL.md").read_text())
+        self.assertIn("owner-check", (REPO_ROOT / "clean-commit" / "SKILL.md").read_text())
+        self.assertFalse((REPO_ROOT / "tex-spec-writer" / "SKILL.md").exists())
+
+        dossier_root = REPO_ROOT / "technical-design-dossier"
+        self.assertTrue((dossier_root / "assets" / "technical-design-dossier-template.tex").is_file())
+        self.assertTrue((dossier_root / "references" / "golden-example.md").is_file())
+
     def test_sanitized_example_exists_and_has_expected_shape(self):
         evidence = EXAMPLE_ROOT / "evidence" / "crawl-summary.json"
         report = EXAMPLE_ROOT / "expected-report.md"
@@ -121,9 +155,13 @@ class SeoGeoPluginPublicContractTest(unittest.TestCase):
         self.assertIn("python3 -B -m unittest clean-commit.tests.test_inspect_unstaged_changes tests.test_seo_geo_plugin_public_contract", workflow)
         self.assertIn("gitleaks detect --source . --verbose", workflow)
         self.assertIn("Repo-local regex secret scan", workflow)
+        self.assertIn("owner-check", workflow)
+        self.assertIn("technical-design-dossier", workflow)
+        self.assertNotIn("tex-spec-writer", workflow)
 
-    def test_plugin_content_is_project_generic(self):
+    def test_public_content_is_project_generic(self):
         files = [
+            REPO_ROOT / "README.md",
             PLUGIN_ROOT / "README.md",
             SECURITY_DOC,
             PROVIDER_DOC,
@@ -132,34 +170,29 @@ class SeoGeoPluginPublicContractTest(unittest.TestCase):
             EXAMPLE_ROOT / "expected-report.md",
             SKILL_ROOT / "SKILL.md",
             SKILL_ROOT / "agents" / "openai.yaml",
+            *(root / "SKILL.md" for root in TOP_LEVEL_SKILL_ROOTS),
         ]
 
         combined = "\n".join(path.read_text() for path in files)
-        project_specific_terms = [
-            "Baryon",
-            "BARYON",
-            "/Users/light",
-            "Desktop/Baryon Vault",
-        ]
+        project_specific_patterns = {
+            "macOS user home path": re.compile(r"/Users/[A-Za-z0-9._-]+"),
+            "private desktop path": re.compile(r"Desktop/[A-Za-z0-9._ -]+"),
+            "repo-local private workspace": re.compile(r"Projects/[A-Za-z0-9._ -]+"),
+        }
 
-        for term in project_specific_terms:
-            self.assertNotIn(term, combined)
+        for label, pattern in project_specific_patterns.items():
+            self.assertIsNone(pattern.search(combined), label)
 
         self.assertIn("any project", combined.lower())
         self.assertIn("public-safe", combined.lower())
 
-    def test_plugin_content_does_not_embed_secret_like_values(self):
+    def test_public_content_does_not_embed_secret_like_values(self):
         scanned_files = [
             path
-            for root in (
-                PLUGIN_ROOT,
-                CLAUDE_MARKETPLACE.parent,
-                CODEX_MARKETPLACE.parent,
-                CI_WORKFLOW.parent,
-            )
+            for root in PUBLIC_TEXT_ROOTS
             for path in root.rglob("*")
             if path.is_file() and ".git" not in path.parts
-        ]
+        ] + PUBLIC_TEXT_FILES
         self.assertGreater(len(scanned_files), 0)
 
         secret_patterns = {
