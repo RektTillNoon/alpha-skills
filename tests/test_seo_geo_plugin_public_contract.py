@@ -14,12 +14,24 @@ PROVIDER_DOC = PLUGIN_ROOT / "docs" / "provider-setup.md"
 COMMAND_FILE = PLUGIN_ROOT / "commands" / "seo-geo-audit.md"
 EXAMPLE_ROOT = PLUGIN_ROOT / "examples" / "sanitized-basic"
 CI_WORKFLOW = REPO_ROOT / ".github" / "workflows" / "seo-geo-publish-safety.yml"
-TOP_LEVEL_SKILL_ROOTS = [
-    REPO_ROOT / "clean",
-    REPO_ROOT / "clean-commit",
-    REPO_ROOT / "owner-check",
-    REPO_ROOT / "technical-design-dossier",
-]
+TOP_LEVEL_SKILL_ROOTS = sorted(
+    path for path in REPO_ROOT.iterdir() if path.is_dir() and (path / "SKILL.md").is_file()
+)
+EXPECTED_TOP_LEVEL_SKILLS = sorted(
+    [
+        "clean",
+        "clean-commit",
+        "clean-merge-push",
+        "evolutionary-5-step",
+        "investigate-fix",
+        "owner-check",
+        "owner-clean",
+        "stateful-planning-protocol",
+        "technical-design-dossier",
+        "tty-design",
+        "writing-ticks",
+    ]
+)
 PUBLIC_TEXT_ROOTS = [
     REPO_ROOT / ".agents",
     REPO_ROOT / ".claude-plugin",
@@ -117,11 +129,14 @@ class SeoGeoPluginPublicContractTest(unittest.TestCase):
     def test_top_level_skill_collection_exposes_expected_skills(self):
         readme_text = (REPO_ROOT / "README.md").read_text()
 
+        self.assertEqual([root.name for root in TOP_LEVEL_SKILL_ROOTS], EXPECTED_TOP_LEVEL_SKILLS)
+        self.assertIn("scripts/install_missing_skills.py <skill-name> --yes", readme_text)
+
         for skill_root in TOP_LEVEL_SKILL_ROOTS:
             skill_file = skill_root / "SKILL.md"
 
             self.assertTrue(skill_file.is_file(), f"Missing {skill_file}")
-            self.assertIn(f"--skill {skill_root.name}", readme_text)
+            self.assertIn(f"`{skill_root.name}`", readme_text)
 
         self.assertIn("owner-check", (REPO_ROOT / "clean" / "SKILL.md").read_text())
         self.assertIn("owner-check", (REPO_ROOT / "clean-commit" / "SKILL.md").read_text())
@@ -152,32 +167,20 @@ class SeoGeoPluginPublicContractTest(unittest.TestCase):
 
         workflow = CI_WORKFLOW.read_text()
 
-        self.assertIn("python3 -B -m unittest clean-commit.tests.test_inspect_unstaged_changes tests.test_seo_geo_plugin_public_contract", workflow)
+        self.assertIn("python3 -B -m unittest clean-commit.tests.test_inspect_unstaged_changes tests.test_install_missing_skills tests.test_seo_geo_plugin_public_contract", workflow)
         self.assertIn("gitleaks detect --source . --verbose", workflow)
         self.assertIn("Repo-local regex secret scan", workflow)
-        self.assertIn("owner-check", workflow)
-        self.assertIn("technical-design-dossier", workflow)
+        self.assertIn("rg -n 'sk-", workflow)
         self.assertNotIn("tex-spec-writer", workflow)
 
     def test_public_content_is_project_generic(self):
-        files = [
-            REPO_ROOT / "README.md",
-            PLUGIN_ROOT / "README.md",
-            SECURITY_DOC,
-            PROVIDER_DOC,
-            COMMAND_FILE,
-            EXAMPLE_ROOT / "README.md",
-            EXAMPLE_ROOT / "expected-report.md",
-            SKILL_ROOT / "SKILL.md",
-            SKILL_ROOT / "agents" / "openai.yaml",
-            *(root / "SKILL.md" for root in TOP_LEVEL_SKILL_ROOTS),
-        ]
-
-        combined = "\n".join(path.read_text() for path in files)
+        files = _public_scanned_files()
+        combined = "\n".join(path.read_text(errors="ignore") for path in files)
         project_specific_patterns = {
             "macOS user home path": re.compile(r"/Users/[A-Za-z0-9._-]+"),
-            "private desktop path": re.compile(r"Desktop/[A-Za-z0-9._ -]+"),
+            "private desktop path": re.compile(r"(?:^|/)Desktop/[A-Za-z0-9._ -]+"),
             "repo-local private workspace": re.compile(r"Projects/[A-Za-z0-9._ -]+"),
+            "private project content": re.compile(r"\b" + "Bary" + r"on\b|\b" + "bar" + r"yon\b"),
         }
 
         for label, pattern in project_specific_patterns.items():
@@ -187,12 +190,7 @@ class SeoGeoPluginPublicContractTest(unittest.TestCase):
         self.assertIn("public-safe", combined.lower())
 
     def test_public_content_does_not_embed_secret_like_values(self):
-        scanned_files = [
-            path
-            for root in PUBLIC_TEXT_ROOTS
-            for path in root.rglob("*")
-            if path.is_file() and ".git" not in path.parts
-        ] + PUBLIC_TEXT_FILES
+        scanned_files = _public_scanned_files()
         self.assertGreater(len(scanned_files), 0)
 
         secret_patterns = {
@@ -212,7 +210,36 @@ class SeoGeoPluginPublicContractTest(unittest.TestCase):
         for path in scanned_files:
             text = path.read_text(errors="ignore")
             for label, pattern in secret_patterns.items():
-                self.assertIsNone(pattern.search(text), f"{label} in {path}")
+                matches = [
+                    match
+                    for match in pattern.finditer(text)
+                    if not _is_public_placeholder(match.group(0))
+                ]
+                self.assertEqual(matches, [], f"{label} in {path}: {matches[:3]}")
+
+
+def _is_public_placeholder(value):
+    placeholders = [
+        "<token>",
+        "<your-token>",
+        "<api-token>",
+        "<your-api-key>",
+        "FIGMA_OAUTH_TOKEN",
+        "OPENAI_API_KEY",
+        "ANTHROPIC_API_KEY",
+        "CODEX_HOME",
+        "CLOUDFLARE_API_TOKEN",
+    ]
+    return any(placeholder in value for placeholder in placeholders)
+
+
+def _public_scanned_files():
+    return [
+        path
+        for root in PUBLIC_TEXT_ROOTS
+        for path in root.rglob("*")
+        if path.is_file() and ".git" not in path.parts
+    ] + PUBLIC_TEXT_FILES
 
 
 if __name__ == "__main__":

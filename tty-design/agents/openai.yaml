@@ -1,0 +1,3 @@
+display_name: TTY Design
+short_description: Design reliable, scannable terminal pickers, menus, and raw-mode CLI flows.
+default_prompt: Improve this CLI's TTY flow so the picker, prompts, and status screens are scannable, width-safe, and behaviorally consistent across commands.

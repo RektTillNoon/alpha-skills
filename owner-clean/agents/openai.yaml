@@ -1,0 +1,4 @@
+interface:
+  display_name: "Owner Clean"
+  short_description: "Run owner-check and cleanup on recent work"
+  default_prompt: "Use $owner-clean to audit your current work with an owner-check pass, run bounded cleanup, patch issues found during verification, and report the proof."
