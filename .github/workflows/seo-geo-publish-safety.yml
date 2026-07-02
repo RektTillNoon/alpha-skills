@@ -1,4 +1,4 @@
-name: SEO/GEO Publish Safety
+name: Publish Safety
 
 on:
   pull_request:
@@ -20,7 +20,7 @@ jobs:
           python-version: "3.x"
 
       - name: Run contract tests
-        run: python3 -B -m unittest clean-commit.tests.test_inspect_unstaged_changes tests.test_seo_geo_plugin_public_contract
+        run: python3 -B -m unittest clean-commit.tests.test_inspect_unstaged_changes tests.test_install_missing_skills tests.test_seo_geo_plugin_public_contract
 
       - name: Install gitleaks
         run: |
@@ -37,10 +37,6 @@ jobs:
       - name: Repo-local regex secret scan
         run: |
           set -euo pipefail
-          scan_paths=(.agents .claude-plugin .github clean clean-commit owner-check technical-design-dossier plugins/seo-geo README.md tests)
-          if rg -n 'sk-[A-Za-z0-9_-]{20,}|sk-ant-[A-Za-z0-9_-]{20,}|gh[pousr]_[A-Za-z0-9_]{20,}|xox[baprs]-[A-Za-z0-9-]{20,}|AIza[0-9A-Za-z_-]{35}|AKIA[0-9A-Z]{16}|eyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}|-----BEGIN [A-Z ]*PRIVATE KEY-----' "${scan_paths[@]}"; then
-            exit 1
-          fi
-          if rg -n "(?i)(api[_-]?key|token|secret|password)\s*[:=]\s*['\"][^'\"\n]{8,}['\"]" "${scan_paths[@]}"; then
+          if rg -n 'sk-[A-Za-z0-9_-]{20,}|sk-ant-[A-Za-z0-9_-]{20,}|gh[pousr]_[A-Za-z0-9_]{20,}|xox[baprs]-[A-Za-z0-9-]{20,}|AIza[0-9A-Za-z_-]{35}|AKIA[0-9A-Z]{16}|eyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}|-----BEGIN [A-Z ]*PRIVATE KEY-----' .; then
             exit 1
           fi

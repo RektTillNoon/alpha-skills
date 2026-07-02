@@ -1,0 +1,4 @@
+interface:
+  display_name: "Clean Merge Push"
+  short_description: "Owner-clean, verify, merge, and push"
+  default_prompt: "Use $clean-merge-push to owner-clean my work, commit it, merge develop into main, run pnpm verify, and push main and develop."

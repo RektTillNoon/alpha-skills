@@ -1,0 +1,4 @@
+interface:
+  display_name: "Writing Ticks"
+  short_description: "Audit prose for common AI-writing tells"
+  default_prompt: "Use $writing-ticks to audit this draft for AI-writing tells and suggest edits that make it sound more natural."

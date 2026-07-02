@@ -1,0 +1,7 @@
+interface:
+  display_name: "Investigate & Fix"
+  short_description: "Investigate bugs to root cause and verified fix"
+  default_prompt: "Use $investigate-fix to restate the symptom and done condition, reproduce or prove the bug, identify the owning seam, capture failing proof where feasible, patch the smallest real fix, add focused regression coverage, and verify the repaired path before broad validation."
+
+policy:
+  allow_implicit_invocation: true
